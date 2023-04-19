@@ -4,7 +4,7 @@
 % (temporal) filter with exponential nonlinearity 
 
 % Make sure paths are set (assumes this script called from 'demos' directory)
-cd ..; setpaths_GLMspiketools; cd demos/
+% cd ..; setpaths_GLMspiketools; cd demos/
 
 %% 1.  Set parameters and display for GLM % =============================
 
@@ -14,21 +14,25 @@ nkt = 30;    % Number of time bins in stimulus filter k
 ggsim = makeSimStruct_GLM(nkt,dtStim,dtSp); % Create GLM structure with default params
 
 % === Plot true model params =======================
-clf;
+figure('name', 'model params')
 ttk = dtStim*(-nkt+1:0)';  % time relative to spike of stim filter taps
-subplot(221);plot(ttk, ggsim.k);
-title('stimulus kernel'); xlabel('time (s)');
+subplot(221)
+plot(ttk, ggsim.k)
+title('stimulus kernel')
+xlabel('time (s)')
 
 subplot(222); % --------
 plot(ggsim.iht, ggsim.iht*0, 'k--', ggsim.iht, ggsim.ih);
-title('post-spike kernel h'); axis tight;
-xlabel('time after spike (s)');
+title('post-spike kernel h')
+axis tight;
+xlabel('time after spike (s)')
 set(gca, 'ylim',[min(ggsim.ih)*1.1 max(ggsim.ih)*1.5]);
 
 subplot(224); % --------
-[iht,ihbasOrthog,ihbasis] = makeBasis_PostSpike(ggsim.ihbasprs,dtSp);
-plot(ggsim.iht, ihbasis);  title('basis for h'); axis tight;
-
+[iht, ihbasOrthog, ihbasis] = makeBasis_PostSpike(ggsim.ihbasprs, dtSp);
+plot(ggsim.iht, ihbasis)
+title('basis for h')
+axis tight
 
 %% 2. Generate some training data  %========================================
 slen = 50000; % Stimulus length (frames); more samples gives better fit
@@ -42,13 +46,17 @@ Stim = rand(slen,swid)*2-1;  % Stimulate model to long, unif-random stimulus
 
 % --- Make plot of first 0.5 seconds of data --------
 tlen = 0.5;
-ttstim = dtStim:dtStim:tlen; iistim = 1:length(ttstim);
+ttstim = dtStim : dtStim : tlen;
+iistim = 1 : length(ttstim);
+
+figure('name','training data')
 subplot(311); 
 plot(ttstim,Stim(iistim));
 title('stimulus');
 
 subplot(312);
-ttspk = dtSp:dtSp:tlen; iispk = 1:length(ttspk);
+ttspk = dtSp : dtSp : tlen; 
+iispk = 1 : length(ttspk);
 spinds = sps(iispk)>0;
 semilogy(ttspk,exp(Itot(iispk)),ttspk(spinds), exp(Itot(spinds)), 'ko');
 ylabel('spike rate (sp/s)');
@@ -56,9 +64,12 @@ title('conditional intensity (and spikes)');
 
 subplot(313); 
 Isp = Itot-Istm; % total spike-history filter output
-plot(ttspk,Istm(iispk), ttspk,Isp(iispk)); axis tight;
-legend('k output', 'h output'); xlabel('time (s)');
-ylabel('log intensity'); title('filter outputs');
+plot(ttspk,Istm(iispk), ttspk,Isp(iispk))
+axis tight
+legend('k output', 'h output')
+xlabel('time (s)')
+ylabel('log intensity')
+title('filter outputs')
 
 %% 3. Setup fitting params %===================================================
 
@@ -92,6 +103,7 @@ opts = {'display', 'iter', 'maxiter', 100}; % options for fminunc
 
 ttk = -nkt+1:0; % time bins for stimulus filter
 
+figure('name','GLM results')
 subplot(221);  % True filter 
 plot(ttk, ggsim.k, 'k', ttk, sta./norm(sta)*norm(ggsim.k), ttk, gg1.k, 'r');
 title('Stim filters');
