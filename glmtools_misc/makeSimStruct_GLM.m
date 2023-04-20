@@ -31,9 +31,13 @@ end
     
 % Create a default (temporal) stimulus filter
 tk = (0:nkt-1)'; % time indices for made-up filter 
-b1 = nkt/32; b2 = nkt/16;
+
+b1 = nkt/32; 
+b2 = nkt/16;
+
 k1 = 1/(gamma(6)*b1)*(tk/b1).^5 .* exp(-tk/b1);  % Gamma pdfn
 k2 = 1/(gamma(6)*b2)*(tk/b2).^5 .* exp(-tk/b2);  % Gamma pdf
+
 k = flipud(k1-k2./1.5+1e-5);
 k = k./norm(k)/2;
 
@@ -55,7 +59,7 @@ ihbasprs.hpeaks = [dtSp dtSp*50];  % Peak location for first and last vectors
 ihbasprs.b = dtSp*5;  % Determines how nonlinear to make spacings
 ihbasprs.absref = []; % absolute refractory period (optional)
 [iht,~,ihbasis] = makeBasis_PostSpike(ihbasprs,dtSp);
-ih = ihbasis*[-10 .5 1 .25 -1]';  % h current
+ih = ihbasis*[-10, 0.5, 1, 0.25, -1]';  % h current
 
 % Place parameters in structure
 S = struct(...

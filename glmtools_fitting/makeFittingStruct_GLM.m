@@ -1,5 +1,5 @@
-function gg = makeFittingStruct_GLM(dtStim,dtSp,klength,nkbasis,k0,nhbasis,lasthpeak)
-% gg = makeFittingStruct_GLM(dtStim,dtSp,klength,nkbasis,k0,nhbasis,lasthpeak)
+function gg = makeFittingStruct_GLM(dtStim, dtSp, klength, nkbasis, k0, nhbasis, lasthpeak)
+% gg = makeFittingStruct_GLM(dtStim, dtSp, klength, nkbasis, k0, nhbasis, lasthpeak)
 %
 % Initialize parameter structure for fitting GLM,
 % with normal parametrization of stim kernel
